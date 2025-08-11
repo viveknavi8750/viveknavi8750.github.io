@@ -1,0 +1,517 @@
+/* Default desktop sizes */
+body {
+    font-size: 16px;
+}
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+p, a, li { font-size: 1rem; }
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px; /* smaller overall */
+    }
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.3rem; }
+    p, a, li { font-size: 0.9rem; }
+}
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f9f9f9;
+    color: #333;
+}
+
+/* Header Navigation */
+header {
+    position: sticky;
+    top: 0;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    z-index: 1000;
+     flex-wrap: wrap;
+}
+.logo img {
+    max-width: 150px; /* desktop size */
+    height: auto;
+}
+
+/* 📱 Mobile */
+@media (max-width: 768px) {
+    .logo img {
+        max-width: 100px; /* smaller on mobile */
+    }
+}
+
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+     flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 1rem;
+    font-weight: 900;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #0073e6;
+}
+
+/* Part 1 - Hero Quote */
+.hero-quote {
+    background-image: url('./brave_screenshot_www.canva.com.png'); /* Your background image */
+    background-size: cover;
+    background-position: center;
+    height: 70vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 0 1rem;
+    position: relative;
+    max-width: 100%; 
+
+    
+}
+
+.hero-quote::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* dark overlay */
+}
+
+.hero-quote .quote-text {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: #f5d59d; /* gold-ish color */
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5); /* for readability */
+    background-color: rgba(0, 0, 0, 0.5); /* black at 50% opacity */
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    display: inline-block; 
+    position: absolute;
+    bottom: 30px; /* gap from bottom */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
+   /* Part 2 & 3 - Text + Image Layout */
+.text-image {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 4rem 2rem;
+    flex-wrap: wrap;
+    background: white;
+    max-width: 100%; 
+}
+p {
+  font-family: 'Maharlika', "Cormorant Garamond", Georgia, serif; /* fallback to a similar serif */
+  font-size: 2rem;            /* adjust as needed */
+  line-height: 1.6;
+  color: #333;
+  margin: 0 0 1rem 0;
+  text-align: justify;
+}
+@font-face {
+  font-family: 'Maharlika';
+  src: url('fonts/Maharlika-Regular.woff2') format('woff2'),
+       url('fonts/Maharlika-Regular.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+.app-text,h2,h1, .content {
+  font-family: 'Maharlika', "Cormorant Garamond", Georgia, serif;
+}
+.text-image.reverse {
+    flex-direction: row-reverse;
+}
+
+.text-image .text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.text-image .text h2 {
+    margin-bottom: 1rem;
+}
+
+.text-image .image {
+    flex: 1;
+    min-width: 300px;
+}
+
+.text-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* General Section */
+section {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    
+}
+
+/* Product Grid */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+/* Testimonials */
+.testimonials {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.testimonial {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.testimonial strong {
+    display: block;
+    margin-top: 0.5rem;
+    color: #0073e6;
+}
+
+/* Contact Section */
+.contact {
+    text-align: center;
+}
+
+.contact a {
+    color: #0073e6;
+    text-decoration: none;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Scroll Animations */
+[data-animate] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+}
+
+[data-animate].visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+.contact-section {
+    padding: 3rem 1rem;
+}
+
+.contact-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Form Styling */
+.contact-form-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.contact-form-container h2 {
+    font-family: 'Maharlika', serif;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #1a1919;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #222;
+}
+
+input {
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    outline: none;
+    font-size: 1rem;
+    transition: box-shadow 0.3s ease, background 0.3s ease;
+}
+
+input:focus {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+button {
+    background: #111;
+    color: #f5d59d;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Maharlika', serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
+}
+
+button:hover {
+    background: #333;
+    transform: translateY(-2px);
+}
+
+#statusMessage {
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: green;
+}
+
+/* Company Info Styling */
+.contact-info {
+    background: rgba(245, 244, 244, 0.85);
+    color: #000000;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 500px;
+    flex: 1;
+    font-family: Arial, sans-serif; /* official font */
+    font-size: 0.9rem; /* smaller size */
+    line-height: 1.5;
+    color: #222;
+}
+
+.contact-info h2 {
+    font-family: 'Maharlika', serif;
+    font-family: 'Maharlika', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.contact-info p {
+     font-family: 'Maharlika', serif;
+    margin: 0.3rem 0;
+    line-height: 1.05;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .contact-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .contact-info {
+        text-align: center;
+    }
+}
+.two-image-card {
+    display: flex;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 2rem auto;
+    flex-wrap: wrap; /* ensures mobile stacking */
+    padding: 60px;
+}
+
+.image-item {
+    position: relative; /* for absolute positioning of link */
+    flex: 1;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.image-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.image-item p {
+    margin-bottom: 2.5rem; /* leave space for link */
+}
+
+.image-item .know-more {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #111;
+    color: #f5d59d;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.image-item .know-more:hover {
+    background: #333;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .two-image-card {
+        flex-direction: column;
+    }
+}
+.products1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.product-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.product-card h3 {
+    font-family: 'Maharlika', serif;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #333;
+}
+
+.product-content {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.product-content img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+ul {
+    list-style: disc;
+    padding-left: 1.2rem;
+    margin: 0;
+    flex: 1;
+}
+
+li {
+    position: relative;
+    margin-bottom: 0.8rem;
+    cursor: pointer;
+}
+
+/* Description hidden initially */
+.description {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    font-size: 0.85rem;
+    color: #222;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    margin-top: 0.3rem;
+}
+
+/* Show only on li hover */
+li:hover .description {
+    max-height: 100px;
+    opacity: 1;
+}
+
+.simple-footer {
+    background-color: #d4d4d4;      /* Dark background */
+    color: #f5d59d;              /* Gold text */
+     font-family: 'Maharlika', serif;
+    text-align: center;
+    padding: 0rem 0;
+    font-size: 0.2rem;
+    border-top: 1px solid rgba(245, 213, 157, 0.3);
+    display: flex;              /* Flexbox for easy centering */
+    justify-content: center;    /* Center horizontally */
+    align-items: center; 
+}
