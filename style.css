@@ -51,7 +51,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 0rem;
+    width:100%;
      flex-wrap: wrap;
 }
 
@@ -256,13 +257,6 @@ h1 {
     text-decoration: none;
 }
 
-/* Footer */
-footer {
-    background: #333;
-    color: white;
-    text-align: center;
-    padding: 2rem;
-}
 
 /* Scroll Animations */
 [data-animate] {
@@ -454,7 +448,7 @@ button:hover {
     right: 10px;
     background: #111;
     color: #f5d59d;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0rem;
     border-radius: 6px;
     text-decoration: none;
     transition: background 0.3s ease;
@@ -549,3 +543,4 @@ li:hover .description {
     justify-content: center;    /* Center horizontally */
     align-items: center; 
 }
+
