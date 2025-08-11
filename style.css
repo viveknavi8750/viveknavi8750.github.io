@@ -370,7 +370,7 @@ button:hover {
     color: #222;
      
 }
-.contact-info image{
+.image{
     align-items: center;
 }
 .contact-info,
@@ -574,6 +574,7 @@ li:hover .description {
     justify-content: center;    /* Center horizontally */
     align-items: center; 
 }
+
 
 
 
