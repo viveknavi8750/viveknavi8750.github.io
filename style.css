@@ -368,7 +368,10 @@ button:hover {
     font-size: 0.5rem !important; /* smaller size */
     line-height: 1.4;
     color: #222;
-    align-items: center;   
+     
+}
+.contact-info image{
+    align-items: center;
 }
 .contact-info,
 .contact-info p,
@@ -571,6 +574,7 @@ li:hover .description {
     justify-content: center;    /* Center horizontally */
     align-items: center; 
 }
+
 
 
 
