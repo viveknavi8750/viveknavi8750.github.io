@@ -26,14 +26,6 @@ body {
 }
 
 /* Header Navigation */
-header {
-    position: sticky;
-    top: 0;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    z-index: 1000;
-     flex-wrap: wrap;
-}
 .logo img {
     max-width: 150px; /* desktop size */
     height: auto;
@@ -543,4 +535,5 @@ li:hover .description {
     justify-content: center;    /* Center horizontally */
     align-items: center; 
 }
+
 
