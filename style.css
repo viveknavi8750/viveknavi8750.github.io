@@ -393,9 +393,10 @@ button:hover {
 }
 .label {
     min-width: auto;
-    margin-right: 0.3rem;    /* Adjust width so all colons align */
+    margin-right: 0rem;    /* Adjust width so all colons align */
     font-weight: bold;
     color: #333;
+    
 }
 .value {
     padding-left: 0px;  /* Space between label and value */
@@ -570,6 +571,7 @@ li:hover .description {
     justify-content: center;    /* Center horizontally */
     align-items: center; 
 }
+
 
 
 
