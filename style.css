@@ -408,7 +408,16 @@ button:hover {
         padding: 1.5rem;
     }
 }
-
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .contact-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .contact-info {
+        text-align: center;
+    }
+}
 .two-image-card {
     display: flex;
     gap: 2rem;
@@ -456,7 +465,11 @@ button:hover {
 }
 
 /* Mobile */
-
+@media (max-width: 768px) {
+    .two-image-card {
+        flex-direction: column;
+    }
+}
 .products1 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
