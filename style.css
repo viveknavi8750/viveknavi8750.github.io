@@ -406,6 +406,12 @@ button:hover {
 .contact-info a:hover {
     text-decoration: underline;
 }
+.image-block img {
+    display: block;
+    margin-bottom: 1rem;      /* space below image */
+    width: 150px;
+    height: 70px;
+}
 
 
 /* Animation */
@@ -561,6 +567,7 @@ li:hover .description {
     justify-content: center;    /* Center horizontally */
     align-items: center; 
 }
+
 
 
 
