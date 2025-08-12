@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'Maharlika';
+  src: url('fonts/Maharlika-Regular.woff2') format('woff2'),
+       url('fonts/Maharlika-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 /* Default desktop sizes */
 body {
     font-size: 16px;
@@ -677,6 +687,7 @@ body {
     padding: 0.8rem !important;
   }
 }
+
 
 
 
