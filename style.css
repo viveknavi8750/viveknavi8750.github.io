@@ -695,6 +695,19 @@ body {
   }
 }
 
+@font-face {
+  font-family: 'Maharlika';
+  src: url('https://fonts.gstatic.com/s/maharlika/v1/Maharlika-Regular.woff2') format('woff2'),
+       url('https://fonts.gstatic.com/s/maharlika/v1/Maharlika-Regular.woff') format('woff');
+  font-display: swap;
+}
+
+h1, h2, h3, h4, h5, h6,
+nav a {
+  font-family: 'Maharlika', serif !important;
+  -webkit-font-smoothing: antialiased; /* Better rendering on iOS */
+}
+
 
 
 
