@@ -401,7 +401,7 @@ button:hover {
      background: url("./form.jpg");
     background-size: cover;
     background-position: center;
-    height:570px ;
+    height:610px ;
     animation: fadeIn 0.8s ease-in-out;
 }
 .image-center{
@@ -773,4 +773,5 @@ html {
     padding: 0.8rem !important;
   }
 }
+
 
