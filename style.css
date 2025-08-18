@@ -377,23 +377,18 @@ button:hover {
 /* Company Info Styling */
 .contact-info {
     
-    flex-direction: column;
-    background: url("./form.jpg");
-    background-size: cover;
-    background-position: center;
     
-    color: #000000;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     width: 100%;
     max-width: 500px;
-    flex: 1;
-    font-family: Arial, sans-serif; /* official font */
-    font-size: 0.5rem !important; /* smaller size */
-    line-height: 3.5;
-    color: #222;
-     animation: fadeIn 0.8s ease-in-out;
+     background: url("./form.jpg");
+    background-size: cover;
+    background-position: center;
+    animation: fadeIn 0.8s ease-in-out;
 }
 .image-center{
     display: flex;
@@ -755,5 +750,6 @@ body {
     padding: 0.8rem !important;
   }
 }
+
 
 
