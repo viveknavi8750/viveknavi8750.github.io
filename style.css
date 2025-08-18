@@ -633,6 +633,8 @@ li:hover .description {
       border-radius: 12px;
       max-width: 500px;
       width: 100%;
+        max-height: 80vh;       
+  overflow-y: auto;
       text-align: left;
       animation: fadeIn 0.3s ease-in-out;
       font-weight:900;
@@ -753,4 +755,5 @@ body {
     padding: 0.8rem !important;
   }
 }
+
 
