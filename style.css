@@ -28,8 +28,11 @@ body {
 
 /* Header Navigation */
 .logo img {
-    max-width: 250px; /* desktop size */
-    height: auto;
+    width: 15vw;       /* logo takes 15% of screen width */
+  height: auto;      /* keeps diagonal (aspect ratio) scaling */
+  object-fit: contain;
+  max-width: 200px;  /* optional: don’t let it grow too big */
+  min-width: 80px; 
      mix-blend-mode:multiply;
 }
 
@@ -124,7 +127,7 @@ nav a:hover {
     gap: 2rem;
     padding: 4rem 2rem;
     flex-wrap: wrap;
-     background-color: #d6ffff;
+     background-color: #c0f5f5;
     max-width: 100%; 
     
 }
@@ -377,7 +380,6 @@ button:hover {
 /* Company Info Styling */
 .contact-info {
     
-    
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     padding: 2rem;
@@ -388,13 +390,20 @@ button:hover {
      background: url("./form.jpg");
     background-size: cover;
     background-position: center;
+    height:570px ;
     animation: fadeIn 0.8s ease-in-out;
 }
 .image-center{
-    display: flex;
-    justify-content: center;  /* centers image horizontally */
-    align-items: center;   
-    
+    display: flex;            /* enables flexbox */
+  justify-content: center;  /* centers horizontally */
+  align-items: center;     
+}
+.image-center img{
+    width: 15vw;        /* 15% of screen width */
+  height: auto;       /* proportional diagonal scaling */
+  object-fit: contain;
+  max-width: 200px;   /* optional: prevent too big */
+  min-width: 80px; 
 }
 .contact-info,
 .contact-info p,
@@ -424,9 +433,9 @@ button:hover {
     color: #333;
     
 }
-.value {
-    padding-left: 0px;  /* Space between label and value */
-    text-align: justify;
+.contact-info .value {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
 }
 
 .contact-info a {
@@ -467,7 +476,7 @@ button:hover {
     }
 }
 body{
-     background-color: #d9fafa;
+     background-color: #c0f5f5;
 }
 .two-image-card {
     display: flex;
@@ -628,7 +637,7 @@ li:hover .description {
       border-radius: 12px;
       max-width: 500px;
       width: 100%;
-        max-height: 80vh;       
+      max-height: 80vh;       /* 👈 limit height */
   overflow-y: auto;
       text-align: left;
       animation: fadeIn 0.3s ease-in-out;
@@ -750,6 +759,4 @@ body {
     padding: 0.8rem !important;
   }
 }
-
-
 

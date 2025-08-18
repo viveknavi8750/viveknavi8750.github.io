@@ -10,7 +10,6 @@ const observer = new IntersectionObserver(entries => {
 
 elements.forEach(el => observer.observe(el));
 
-
  const popup = document.getElementById("popup");
   const popupInner = document.getElementById("popupInner");
   const backBtn = document.getElementById("backBtn");
@@ -22,10 +21,9 @@ elements.forEach(el => observer.observe(el));
       const card = e.target.closest(".product-card");
       lastClickedCard = card; // save reference
 
-      const fullInfo = e.target.nextElementSibling; // grab hidden .full-info
+       const fullInfo = e.target.nextElementSibling; // grab hidden .full-info
       popupInner.innerHTML = fullInfo.innerHTML;    // insert it into popup
-      popup.style.display = "flex";
-    });
+      popup.style.display = "flex";  });
   });
 
   backBtn.addEventListener("click", () => {
@@ -36,4 +34,3 @@ elements.forEach(el => observer.observe(el));
       lastClickedCard.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   });
-
