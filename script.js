@@ -22,8 +22,8 @@ elements.forEach(el => observer.observe(el));
       const card = e.target.closest(".product-card");
       lastClickedCard = card; // save reference
 
-      const fullInfo = card.querySelector(".full-info");
-      popupInner.innerHTML = fullInfo.innerHTML;
+      const fullInfo = e.target.nextElementSibling; // grab hidden .full-info
+      popupInner.innerHTML = fullInfo.innerHTML;    // insert it into popup
       popup.style.display = "flex";
     });
   });
@@ -36,3 +36,4 @@ elements.forEach(el => observer.observe(el));
       lastClickedCard.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   });
+
