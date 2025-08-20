@@ -583,6 +583,8 @@ button:hover {
     object-fit: cover;
     border-radius: 10px;
     flex-shrink: 0;
+    margin: 10px auto; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); 
 }
 
 ul {
@@ -628,6 +630,17 @@ li:hover .description {
     transition: background 0.3s ease;
 }
 .full-info { display: none; }
+.pi{
+  width: auto;        /* keep natural width */
+    height: 250px;      /* fix portrait height */
+    object-fit: contain; /* keeps full image visible without stretching */
+    display: block;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25); 
+
+    margin: 10px auto;   /* center horizontally */  
+}
 .popup {
       display: none;
       position:absolute;
