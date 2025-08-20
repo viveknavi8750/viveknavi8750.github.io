@@ -787,3 +787,9 @@ html {
   }
 }
 
+.P-C{
+     max-width: 1200px;   /* keeps content from stretching too wide */
+    margin: 0 auto;      /* centers the block horizontally */
+    text-align: center;  /* centers inline/text elements */
+
+}
