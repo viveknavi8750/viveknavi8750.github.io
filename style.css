@@ -9,7 +9,7 @@ body {
     font-size: 16px;
      font-family: Arial, sans-serif;
     margin: 0;
-    background: #c0f5f5;;
+    background: #c0f5f5;
     color: #333;
     overflow-x: hidden; 
     padding: 0;
@@ -204,16 +204,29 @@ h1 {
 
 /* Product Grid */
 .products {
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 1.5rem;
     padding: 2rem;
-      background-color: #d6ffff;
+      background-color:#c0f5f5;
+       justify-content: center;
+        flex-wrap: wrap;   
+          max-width: 1200px; 
+          margin: 0 auto;
+          align-items: flex-start;
+          text-align: center;
    
 }
+.center-title {
+  text-align: center !important;
+  width: 100%;
+  margin: 0 auto 1rem;
+}
+
 .products h1{
     display: block;
-    background-color: #2222229d;
+    background-color: #22222200;
+    text-align: center;
 }
 .product-card {
     background: rgb(255, 255, 255);
@@ -548,14 +561,19 @@ button:hover {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
     padding: 2rem;
-    
-    
+    justify-content: center;   /* center cards horizontally */
+  align-items: flex-start;
+    flex-wrap: wrap;           /* wrap nicely on smaller screens */
+  margin: 2rem auto;         /* add space above/below and center container */
+  max-width: 1200px; 
+  
 }
 
 .product-card {
     background: rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(10px);
     padding: 1.5rem;
+    height: 400px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
      background: rgb(255, 255, 255);
