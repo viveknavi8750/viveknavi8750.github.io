@@ -33,4 +33,13 @@ elements.forEach(el => observer.observe(el));
     if (lastClickedCard) {
       lastClickedCard.scrollIntoView({ behavior: "smooth", block: "center" });
     }
+
   });
+
+
+
+window.addEventListener('load', () => {
+  document.body.style.display = 'none';
+  document.body.offsetHeight; // trigger reflow
+  document.body.style.display = '';
+});
