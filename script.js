@@ -1,51 +1,62 @@
-// Scroll animation effect with immediate visibility fix
 const elements = document.querySelectorAll('[data-animate]');
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
-    });
-}, { threshold: 0.2 });
 
-elements.forEach(el => {
-  // Add 'visible' immediately if element is already in viewport (within 80% of viewport height)
-  if (el.getBoundingClientRect().top < window.innerHeight * 0.8) {
-    el.classList.add('visible');
-  }
-  // Start observing changes in intersection
-  observer.observe(el);
-});
+// Safari IntersectionObserver fallback
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  elements.forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.8) {
+      el.classList.add('visible');
+    }
+    observer.observe(el);
+  });
+} else {
+  elements.forEach(el => el.classList.add('visible'));
+}
 
 const popup = document.getElementById("popup");
 const popupInner = document.getElementById("popupInner");
 const backBtn = document.getElementById("backBtn");
-
-let lastClickedCard = null; // store clicked card
+let lastClickedCard = null;
 
 document.querySelectorAll(".know-more1").forEach(btn => {
   btn.addEventListener("click", (e) => {
     const card = e.target.closest(".product-card");
-    lastClickedCard = card; // save reference
+    lastClickedCard = card;
 
-    const fullInfo = e.target.nextElementSibling; // grab hidden .full-info
-    popupInner.innerHTML = fullInfo.innerHTML;    // insert it into popup
+    const fullInfo = e.target.nextElementSibling;
+    popupInner.innerHTML = fullInfo.innerHTML;
     popup.style.display = "flex";
+    popup.offsetHeight; // Safari repaint fix
+    popup.style.zIndex = "9999";
   });
 });
 
 backBtn.addEventListener("click", () => {
   popup.style.display = "none";
-
-  // scroll back to the clicked card smoothly
   if (lastClickedCard) {
-    lastClickedCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    try {
+      lastClickedCard.scrollIntoView({ behavior: "smooth", block: "center" });
+    } catch (e) {
+      lastClickedCard.scrollIntoView(); // Safari fallback
+    }
   }
 });
 
-// Force repaint on page load to fix iOS rendering bugs
 window.addEventListener('load', () => {
   document.body.style.display = 'none';
-  document.body.offsetHeight; // trigger reflow
+  document.body.offsetHeight;
   document.body.style.display = '';
+  // Extra for safaris (if you have multiple popups)
+  Array.from(document.querySelectorAll('.popup')).forEach(popup => {
+    popup.style.display = 'none';
+    popup.offsetHeight;
+    popup.style.display = '';
+  });
 });
