@@ -556,10 +556,15 @@ button:hover {
     background: rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(10px);
     padding: 1.5rem;
+    
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
      background: rgb(255, 255, 255);
-   
+    display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* keep content & button spaced */
+  min-height: 100%; 
+  overflow: visible; 
 }
 
 .product-card h3 {
@@ -575,8 +580,24 @@ button:hover {
     align-items: flex-start;
     color: #000;
     font-weight: 900;
-}
+    flex: 1 1 auto;   /* allow flexible growth */
+  min-height: 0;    /* 🔑 Safari fix: prevents flex collapse */
 
+  flex-direction: column;
+  justify-content: space-between;
+}
+.P-C{
+     max-width: 1200px;   /* keeps content from stretching too wide */
+    margin: 0 auto;      /* centers the block horizontally */
+    text-align: center;  /* centers inline/text elements */
+
+}
+.product-card button,
+.know-more1,
+.image-item .know-more {
+  margin-top: auto;  /* push button to bottom */
+  flex-shrink: 0;    /* 🔑 Safari fix: don’t shrink button */
+}
 .product-content img {
     width: 120px;
     height: 120px;
@@ -787,9 +808,4 @@ html {
   }
 }
 
-.P-C{
-     max-width: 1200px;   /* keeps content from stretching too wide */
-    margin: 0 auto;      /* centers the block horizontally */
-    text-align: center;  /* centers inline/text elements */
 
-}
