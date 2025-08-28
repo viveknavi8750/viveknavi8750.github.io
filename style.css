@@ -596,7 +596,17 @@ button:hover {
 .know-more1,
 .image-item .know-more {
   margin-top: auto;  /* push button to bottom */
-  flex-shrink: 0;    /* 🔑 Safari fix: don’t shrink button */
+  flex-shrink: 0;  
+  visibility: hidden;   /* ✅ Safari-safe hiding */
+  opacity: 0;
+  transition: opacity 0.3s ease;  /* 🔑 Safari fix: don’t shrink button */
+}
+
+.product-card.active button,
+.product-card.active .know-more1,
+.product-card.active .know-more {
+  visibility: visible;
+  opacity: 1;
 }
 .product-content img {
     width: 120px;
