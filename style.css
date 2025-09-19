@@ -143,23 +143,23 @@ nav a:hover {
     
 }
 p {
-  font-family:  "Cormorant Garamond", Georgia, serif; /* fallback to a similar serif */
-  font-size: 1.4rem;            /* adjust as needed */
+  font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif;
+  font-size: 1.4rem;
   line-height: 1.6;
   color: #333;
   margin: 0 0 1rem 0;
   text-align: justify;
 }
 @font-face {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: 'Maharlika';
   src: url('fonts/Maharlika-Regular.woff2') format('woff2'),
        url('fonts/Maharlika-Regular.woff') format('woff');
-  font-weight: 1000;
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 .app-text,h2,h1, .content {
-  font-family:  "Cormorant Garamond", Georgia, serif;
+  font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif;
 }
 .text-image.reverse {
     flex-direction: row-reverse;
@@ -318,20 +318,23 @@ h1 {
 /* Form Styling */
 .contact-form-container {
     background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 15px;
+    -webkit-box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     width: 100%;
     max-width: 500px;
-     background: url("./form.jpg");
+    background: url("./form.jpg");
     background-size: cover;
     background-position: center;
+    -webkit-animation: fadeIn 0.8s ease-in-out;
     animation: fadeIn 0.8s ease-in-out;
 }
 
 .contact-form-container h2 {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif;
     text-align: center;
     margin-bottom: 1.5rem;
     color: #1a1919;
@@ -370,9 +373,10 @@ button {
     padding: 0.8rem;
     border: none;
     border-radius: 8px;
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif;
     font-size: 1.1rem;
     cursor: pointer;
+    -webkit-transition: transform 0.2s ease, background 0.3s ease;
     transition: transform 0.2s ease, background 0.3s ease;
 }
 
@@ -390,18 +394,20 @@ button:hover {
 
 /* Company Info Styling */
 .contact-info {
-    
     background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 15px;
+    -webkit-box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     width: 100%;
     max-width: 500px;
-     background: url("./form.jpg");
+    background: url("./form.jpg");
     background-size: cover;
     background-position: center;
     height:610px ;
+    -webkit-animation: fadeIn 0.8s ease-in-out;
     animation: fadeIn 0.8s ease-in-out;
 }
 .image-center{
@@ -499,15 +505,16 @@ button:hover {
 }
 
 .image-item {
-    position: relative; /* for absolute positioning of link */
+    position: relative;
     flex: 1;
     background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     padding: 1rem;
     border-radius: 10px;
+    -webkit-box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-     background: rgb(255, 255, 255);
-   
+    background: rgb(255, 255, 255);
 }
 
 .image-item img {
@@ -554,16 +561,17 @@ button:hover {
 
 .product-card {
     background: rgba(0, 0, 0, 0.15);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     padding: 1.5rem;
     border-radius: 15px;
+    -webkit-box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-     background: rgb(255, 255, 255);
-   
+    background: rgb(255, 255, 255);
 }
 
 .product-card h3 {
-    font-family: "Cormorant Garamond", Georgia, serif;
+    font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif;
     margin-bottom: 1rem;
     text-align: center;
     color: #030303;
@@ -659,11 +667,14 @@ li:hover .description {
       border-radius: 12px;
       max-width: 500px;
       width: 100%;
-      max-height: 80vh;       /* 👈 limit height */
-  overflow-y: auto;
+      max-height: 80vh;
+      overflow-y: auto;
       text-align: left;
+      -webkit-animation: fadeIn 0.3s ease-in-out;
       animation: fadeIn 0.3s ease-in-out;
-      font-weight:900;
+      font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
     }
 
     @keyframes fadeIn {
@@ -671,23 +682,23 @@ li:hover .description {
       to { opacity: 1; transform: translateY(0); }
     }
 footer.simple-footer {
-    background-color: #d6ffff;     /* Dark background */
-    color: #fdbe52;              /* Gold text */
-     font-family: "Cormorant Garamond", Georgia, serif;
+    background-color: #d6ffff;
+    color: #fdbe52;
+    font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif;
     text-align: center;
-   position: relative;
+    position: relative;
     font-size: 0.2rem;
     border-top: 1px solid rgba(97, 70, 23, 0.3);
-    display: flex;    
-    width:100vw;/* Flexbox for easy centering */
-    justify-content: center;    /* Center horizontally */
-   margin-left: calc(-50vw + 50%); 
-      box-sizing: border-box;
-      left: 0;
-  right: 0;
-  bottom: 0;
-      margin: 0 !important;
-       max-width: 100% !important;
+    display: flex;
+    width:100vw;
+    justify-content: center;
+    margin-left: calc(-50vw + 50%);
+    box-sizing: border-box;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 !important;
+    max-width: 100% !important;
 }
 section, header, nav {
   margin: 0;
@@ -704,11 +715,14 @@ section, header, nav {
 /* ✅ iOS & mobile text scaling fix */
 html {
   -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 /* ✅ Font-face definition with full browser support */
 @font-face {
-  font-family: '"Cormorant Garamond", Georgia, serif';
+  font-family: 'Maharlika';
   src: url('fonts/Maharlika-Regular.woff2') format('woff2'),
        url('fonts/Maharlika-Regular.woff') format('woff'),
        url('fonts/Maharlika-Regular.ttf') format('truetype');
@@ -791,5 +805,36 @@ html {
      max-width: 1200px;   /* keeps content from stretching too wide */
     margin: 0 auto;      /* centers the block horizontally */
     text-align: center;  /* centers inline/text elements */
+}
 
+/* Fallback styles for browsers that don't support backdrop-filter */
+@supports not ((-webkit-backdrop-filter: blur()) or (backdrop-filter: blur())) {
+  .contact-form-container,
+  .contact-info,
+  .image-item,
+  .product-card {
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+}
+
+/* Safari-specific italic font fixes for popup content */
+.popup-content p,
+.popup-content h2,
+.popup-content li,
+.popup-content div {
+    font-style: italic !important;
+    font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif !important;
+    font-weight: 400 !important;
+}
+
+.popup-content strong {
+    font-style: italic !important;
+    font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif !important;
+    font-weight: 600 !important;
+}
+
+/* Force italic for all text elements in popup */
+.popup-content * {
+    font-style: italic !important;
+    font-family: 'Cormorant Garamond', 'Maharlika', Georgia, serif !important;
 }
