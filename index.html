@@ -1,58 +1,50 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>PG Tenant Manager — Edit in Add Form</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PG Tenant Manager — Final</title>
 <style>
-  body{ margin:0; font-family:Arial,Helvetica,sans-serif; background:#f4f6f8; color:#0f172a; }
-  .container{ display:flex; height:100vh; }
-  .sidebar{ width:220px; background:#111827; color:white; padding:18px; display:flex; flex-direction:column; gap:8px; }
-  .sidebar button{ background:#0b1220; color:#e5e7eb; border:none; padding:10px; border-radius:8px; cursor:pointer; text-align:left; }
-  .sidebar button.active{ background:#0f1724; }
-  .main{ flex:1; padding:20px; overflow:auto; }
-  .card{ background:white; padding:16px; border-radius:10px; box-shadow:0 6px 18px rgba(15,23,42,0.06); margin-bottom:16px; }
+  :root{ --accent:#0a84ff; --muted:#6b7280; }
+  body{ margin:0; font-family:Inter,Arial,sans-serif; background:#f3f4f6; color:#0f172a; }
+  .container{ display:flex; min-height:100vh; }
+  .sidebar{ width:220px; background:#111827; color:#fff; padding:18px; display:flex; flex-direction:column; gap:8px; }
+  .sidebar button{ background:transparent; color:inherit; border:none; padding:10px; text-align:left; border-radius:8px; cursor:pointer; }
+  .sidebar button.active{ background:#0b1220; }
+  .main{ flex:1; padding:20px; }
+  .card{ background:#fff; padding:16px; border-radius:10px; box-shadow:0 6px 18px rgba(15,23,42,0.06); margin-bottom:16px; }
   .row{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-  label{ display:block; margin:6px 0 4px; font-size:13px; color:#374151; }
-  input,select{ width:100%; padding:10px; border-radius:8px; border:1px solid #e6e7eb; font-size:14px; background:#fff; }
-  .btn{ background:#0a84ff; color:white; border:none; padding:10px 14px; border-radius:9px; cursor:pointer; }
-  .controls{ display:flex; gap:12px; align-items:center; }
-  .item{ background:#f9fafb; padding:12px; border-radius:8px; border:1px solid #e5e7eb; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
-  .small-btn{ padding:6px 8px; border-radius:8px; border:none; cursor:pointer; margin-left:6px; }
-  .edit{ background:#059669; color:white; }
-  .remove{ background:#ef4444; color:white; }
-  .undo{ background:#6b7280; color:white; }
-  .badge{ display:inline-block; padding:6px 8px; border-radius:999px; background:#eef2ff; color:#1e3a8a; margin-right:6px; }
-  .pagination button{ padding:6px 10px; margin:2px; border-radius:6px; border:1px solid #e6e7eb; cursor:pointer; background:white; }
-  .pagination button.active{ background:#0a84ff; color:white; }
+  label{ display:block; margin-bottom:6px; color:var(--muted); font-size:13px; }
+  input,select{ width:100%; padding:10px; border:1px solid #e6e7eb; border-radius:8px; background:#fff; }
+  .btn{ background:var(--accent); color:#fff; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; }
+  .item{ display:flex; justify-content:space-between; align-items:center; padding:12px; border-radius:8px; background:#f9fafb; border:1px solid #e5e7eb; margin-bottom:10px; }
+  .small-btn{ padding:6px 10px; border:none; border-radius:8px; cursor:pointer; margin-left:6px; font-size:13px; }
+  .edit{ background:#059669; color:#fff; } .remove{ background:#ef4444; color:#fff; } .undo{ background:#6b7280; color:#fff; }
+  .pagination button{ padding:6px 10px; margin:2px; border-radius:6px; border:1px solid #e6e7eb; background:#fff; cursor:pointer; }
+  .pagination button.active{ background:var(--accent); color:#fff; }
   @media(max-width:900px){ .row{ grid-template-columns:1fr; } .sidebar{ display:none; } }
 </style>
 </head>
 <body>
 <div class="container">
   <aside class="sidebar">
-    <h3 style="margin:0 0 8px 0">PG Manager</h3>
-    <button id="nav-dashboard" class="active" onclick="showSection('dashboard')">📊 Dashboard</button>
+    <h3 style="margin:0 0 6px 0">PG Manager</h3>
+    <button id="nav-dashboard" onclick="showSection('dashboard')" class="active">📊 Dashboard</button>
     <button id="nav-add" onclick="showSection('add')">➕ Add Tenant</button>
     <button id="nav-list" onclick="showSection('list')">👥 Show Tenants</button>
-    <div style="margin-top:auto; font-size:12px; color:#9ca3af">Rooms: 101–106,201–206,...,601–603</div>
+    <div style="margin-top:auto; font-size:12px; color:#9ca3af">Rooms: 101-106, 201-206, … 601-603</div>
   </aside>
 
   <main class="main">
-    <!-- Dashboard -->
     <section id="section-dashboard" class="card">
-      <h2 style="margin:0 0 12px 0">Occupancy Dashboard</h2>
+      <h2 style="margin:0 0 12px 0">Dashboard</h2>
       <div id="dashboardContent">Loading...</div>
     </section>
 
-    <!-- Add / Edit Form -->
     <section id="section-add" class="card" style="display:none">
       <h2 id="formTitle" style="margin:0 0 12px 0">➕ Add Tenant</h2>
-
       <form id="tenantForm" autocomplete="off">
-        <!-- hidden id for edits -->
         <input type="hidden" id="editId" value="">
-
         <div class="row">
           <div>
             <label for="name">Name</label>
@@ -64,11 +56,11 @@
           </div>
 
           <div>
-            <label for="moveIn">Move-in Date</label>
+            <label for="moveIn">Move-in</label>
             <input id="moveIn" type="date" />
           </div>
           <div>
-            <label for="moveOut">Move-out Date</label>
+            <label for="moveOut">Move-out</label>
             <input id="moveOut" type="date" />
           </div>
 
@@ -86,49 +78,47 @@
             <select id="room" required></select>
           </div>
           <div>
-            <label for="bed">Bed (1–4)</label>
-            <select id="bed" required><option value="">Select bed</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
+            <label for="bed">Bed (1-4)</label>
+            <select id="bed" required><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
           </div>
         </div>
 
         <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
           <button class="btn" type="submit" id="saveBtn">Save Tenant</button>
-          <button type="button" id="cancelBtn" style="background:#f3f4f6; border:1px solid #e6e7eb; padding:10px 12px; border-radius:8px">Clear</button>
+          <button type="button" id="clearBtn" style="background:#f3f4f6;border:1px solid #e6e7eb;padding:10px;border-radius:8px">Clear</button>
           <div id="formMsg" style="margin-left:12px;color:#065f46"></div>
         </div>
       </form>
     </section>
 
-    <!-- List -->
     <section id="section-list" class="card" style="display:none">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
-        <h2 style="margin:0">👥 Tenants</h2>
-        <div class="controls">
-          <input id="search" placeholder="Search name / phone / room" style="padding:8px;border-radius:8px;border:1px solid #e6e7eb" />
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h2 style="margin:0">Tenants</h2>
+        <div style="display:flex;gap:10px;align-items:center">
+          <input id="search" placeholder="Search name/phone/room" style="padding:8px;border-radius:8px;border:1px solid #e6e7eb" />
           <select id="filterRoom" style="padding:8px;border-radius:8px;border:1px solid #e6e7eb"><option value="">All Rooms</option></select>
         </div>
       </div>
 
-      <div id="tenantListContainer"></div>
-      <div id="pagination" style="margin-top:12px" class="pagination"></div>
+      <div id="tenantList"></div>
+      <div id="pagination" class="pagination" style="margin-top:12px"></div>
     </section>
-
   </main>
 </div>
 
 <script>
-/* ====== CONFIG: set your deployed Apps Script Web App URL here ====== */
+/* ====== CONFIG: replace with your deployed Apps Script web app URL ====== */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeYacsS876b0w1-pytYjPgo7XUAfsnLpkFoFgmPiOQDX0KunscC0ts5O57cUIDQ3zStA/exec";
-/* ================================================================== */
+/* ====================================================================== */
 
 const ROOMS = ['101','102','103','104','105','106','201','202','203','204','205','206','301','302','303','304','305','306','401','402','403','404','405','406','501','502','503','504','505','506','601','602','603'];
 
-let tenantData = [];       // normalized array from server
+let tenantData = []; // normalized
 let currentPage = 1;
 const itemsPerPage = 6;
 let isSubmitting = false;
 
-/* ---------- DOM refs ---------- */
+/* DOM refs */
 const navDashboard = document.getElementById('nav-dashboard');
 const navAdd = document.getElementById('nav-add');
 const navList = document.getElementById('nav-list');
@@ -142,161 +132,144 @@ const editIdInput = document.getElementById('editId');
 const formTitle = document.getElementById('formTitle');
 const formMsg = document.getElementById('formMsg');
 const saveBtn = document.getElementById('saveBtn');
-const cancelBtn = document.getElementById('cancelBtn');
+const clearBtn = document.getElementById('clearBtn');
 
 const searchInput = document.getElementById('search');
 const filterRoom = document.getElementById('filterRoom');
-const tenantListContainer = document.getElementById('tenantListContainer');
+const tenantListEl = document.getElementById('tenantList');
 const paginationEl = document.getElementById('pagination');
 
-/* ---------- init rooms in selects ---------- */
+/* init rooms */
 function initRooms(){
   const roomSelect = document.getElementById('room');
-  roomSelect.innerHTML = '<option value=\"\">Select Room</option>';
-  ROOMS.forEach(r => {
-    roomSelect.innerHTML += `<option value="${r}">${r}</option>`;
-  });
-
-  // filter select
+  roomSelect.innerHTML = '<option value="">Select Room</option>';
+  ROOMS.forEach(r => roomSelect.innerHTML += `<option value="${r}">${r}</option>`);
   filterRoom.innerHTML = '<option value="">All Rooms</option>';
   ROOMS.forEach(r => filterRoom.innerHTML += `<option value="${r}">${r}</option>`);
 }
 initRooms();
 
-/* ---------- navigation ---------- */
-function clearActiveNav(){ navDashboard.classList.remove('active'); navAdd.classList.remove('active'); navList.classList.remove('active'); }
+/* navigation */
+function clearNav(){ navDashboard.classList.remove('active'); navAdd.classList.remove('active'); navList.classList.remove('active'); }
 function showSection(which){
-  clearActiveNav();
+  clearNav();
   sectionDashboard.style.display = 'none';
   sectionAdd.style.display = 'none';
   sectionList.style.display = 'none';
 
-  if(which === 'dashboard'){
-    navDashboard.classList.add('active');
-    sectionDashboard.style.display = 'block';
-    loadDashboard();
-  } else if(which === 'add'){
-    navAdd.classList.add('active');
-    sectionAdd.style.display = 'block';
-    // clear edit state
-    resetForm();
-  } else {
-    navList.classList.add('active');
-    sectionList.style.display = 'block';
-    loadTenants();
-  }
+  if(which === 'dashboard'){ navDashboard.classList.add('active'); sectionDashboard.style.display = 'block'; loadDashboard(); }
+  else if(which === 'add'){ navAdd.classList.add('active'); sectionAdd.style.display = 'block'; resetForm(); }
+  else { navList.classList.add('active'); sectionList.style.display = 'block'; loadTenants(); }
 }
-// init to dashboard
 showSection('dashboard');
 
-/* ---------- API helpers ---------- */
-async function apiFetch(action, opts = {}){
-  // action as query param for both GET and POST
+/* fetch wrapper */
+async function apiFetch(action, opts = {}) {
   const url = `${SCRIPT_URL}?action=${action}`;
   const finalOpts = Object.assign({}, opts);
-  // if opts.body is object, stringify and set header
   if(finalOpts.body && typeof finalOpts.body === 'object'){
     finalOpts.headers = Object.assign({}, finalOpts.headers || {}, {'Content-Type':'application/json'});
     finalOpts.body = JSON.stringify(finalOpts.body);
   }
   const res = await fetch(url, finalOpts);
-  if(!res.ok) throw new Error('Network response not ok: ' + res.status);
+  if(!res.ok) throw new Error('Network error ' + res.status);
   const text = await res.text();
   try { return JSON.parse(text); } catch(e) { return text; }
 }
 
-/* ---------- Dashboard ---------- */
+/* Dashboard */
 async function loadDashboard(){
+  document.getElementById('dashboardContent').textContent = 'Loading...';
   try{
-    document.getElementById('dashboardContent').textContent = 'Loading...';
-    const data = await apiFetch('dashboard', { method: 'GET' });
-    // data: { floors: {...}, rooms: {...}, rentStatus: {...} }
-    const total = Object.values(data.floors || {}).reduce((a,b)=>a+b,0) || 0;
-    const paid = (data.rentStatus && data.rentStatus.Paid) || 0;
-    const pending = (data.rentStatus && data.rentStatus.Pending) || 0;
-
-    const html = `
-      <div style="display:flex; gap:12px; flex-wrap:wrap">
-        <div class="stat-box" style="flex:1">
-          <div style="font-size:28px; font-weight:700">${total}</div>
-          <div>Total Tenants</div>
-        </div>
-        <div class="stat-box" style="flex:1">
-          <div style="font-size:22px; font-weight:700; color:${paid? '#059669':'#374151'}">${paid}</div>
-          <div>Rent Paid</div>
-        </div>
-        <div class="stat-box" style="flex:1">
-          <div style="font-size:22px; font-weight:700; color:${pending? '#b91c1c':'#374151'}">${pending}</div>
-          <div>Rent Pending</div>
-        </div>
+    const data = await apiFetch('dashboard', { method:'GET' });
+    console.log('dashboard:', data);
+    const floors = data.floors || {};
+    const rooms = data.rooms || {};
+    const rentStatus = data.rentStatus || { Paid:0, Pending:0 };
+    const total = Object.values(floors).reduce((a,b)=>a+b,0) || 0;
+    document.getElementById('dashboardContent').innerHTML = `
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div class="card" style="flex:1;text-align:center"><div style="font-size:28px;font-weight:700">${total}</div><div>Total tenants</div></div>
+        <div class="card" style="flex:1;text-align:center"><div style="font-size:22px;font-weight:700">${rentStatus.Paid||0}</div><div>Rent Paid</div></div>
+        <div class="card" style="flex:1;text-align:center"><div style="font-size:22px;font-weight:700">${rentStatus.Pending||0}</div><div>Rent Pending</div></div>
       </div>
     `;
-    document.getElementById('dashboardContent').innerHTML = html;
   } catch(err){
     console.error('loadDashboard error', err);
-    document.getElementById('dashboardContent').textContent = 'Failed to load dashboard (check SCRIPT_URL)';
+    document.getElementById('dashboardContent').textContent = 'Failed to load dashboard.';
   }
 }
 
-/* ---------- Load Tenants (list) ---------- */
+/* Load tenants */
 async function loadTenants(){
   try{
     console.log('Fetching tenants...');
-    const data = await apiFetch('list', { method: 'GET' });
-    console.log('RAW tenant response:', data);
+    const data = await apiFetch('list', { method:'GET' });
+    console.log('RAW tenants response:', data);
+
+    // normalize server array -> tenantData
     if(!Array.isArray(data)) {
+      // if server returns object wrapper
       tenantData = Array.isArray(data.items) ? data.items : [];
     } else {
       tenantData = data;
     }
-    // normalize records
-    tenantData = tenantData.map((r, idx) => ({
-      id: r.id || r.row || r._id || r._row || r.rowId || (r.row ? String(r.row) : undefined) || (r.id ? String(r.id) : undefined),
-      rowNum: r.row || r._row || null,   // sheet row - not used for edits
-      name: r.name || r.Name || '',
-      phone: r.phone || r.Phone || '',
-      moveIn: r.moveIn || r.MoveIn || r.movein || '',
-      moveOut: r.moveOut || r.MoveOut || r.moveout || '',
-      rent: r.rent || r.Rent || '',
-      rentStatus: r.rentStatus || r.RentStatus || 'Pending',
-      bed: String(r.bed || r.Bed || '').trim(),
-      room: String(r.room || r.Room || '').trim()
-    }));
+
+    // Normalization: prefer server-provided id (RowId or id), fallback to row
+    tenantData = tenantData.map(r => {
+      // possible keys: r.id, r.row, r.RowId, r.rowId
+      const id = (r.id || r.id === 0) ? String(r.id) : ((r.row || r.row === 0) ? String(r.row) : (r.RowId||r.rowId ? String(r.RowId||r.rowId) : ''));
+      return {
+        id: id,
+        rowNum: r.row || null,
+        name: r.name || r.Name || '',
+        phone: r.phone || r.Phone || '',
+        moveIn: r.moveIn || r.MoveIn || r.movein || '',
+        moveOut: r.moveOut || r.MoveOut || r.moveout || '',
+        rent: r.rent || r.Rent || '',
+        rentStatus: r.rentStatus || r.RentStatus || 'Pending',
+        bed: String(r.bed || r.Bed || '').trim(),
+        room: String(r.room || r.Room || '').trim(),
+        // support status column names if present
+        status: (r.Status || r.status || r.IsDeleted || r.isDeleted || r.statusText) || ''
+      };
+    });
+
     currentPage = 1;
     renderTenantList();
     populateFilterRoom();
   } catch(err){
     console.error('loadTenants error', err);
-    tenantData = [];
-    tenantListContainer.innerHTML = '<div style="color:#b91c1c">Failed to load tenants. Check SCRIPT_URL and deployment.</div>';
+    tenantListEl.innerHTML = '<div style="color:#b91c1c">Failed to load tenants — check SCRIPT_URL/deployment.</div>';
   }
 }
 
-/* ---------- Render list with pagination ---------- */
+/* Render list */
 function renderTenantList(){
-  try {
+  try{
     const q = (searchInput.value || '').trim().toLowerCase();
     const froom = filterRoom.value || '';
-    let list = tenantData.slice();
 
+    let list = tenantData.slice();
     if(froom) list = list.filter(t => t.room === froom);
     if(q) list = list.filter(t => (t.name||'').toLowerCase().includes(q) || (t.phone||'').toLowerCase().includes(q) || (t.room||'').includes(q));
 
     const total = list.length;
     const pages = Math.max(1, Math.ceil(total / itemsPerPage));
     if(currentPage > pages) currentPage = pages;
-
     const start = (currentPage - 1) * itemsPerPage;
     const pageData = list.slice(start, start + itemsPerPage);
 
-    tenantListContainer.innerHTML = '';
-    if(pageData.length === 0){
-      tenantListContainer.innerHTML = '<div style="padding:12px;color:#6b7280">No tenants found</div>';
+    tenantListEl.innerHTML = '';
+    if(pageData.length === 0) {
+      tenantListEl.innerHTML = '<div style="padding:12px;color:#6b7280">No tenants found</div>';
     } else {
       pageData.forEach(t => {
-        const el = document.createElement('div');
-        el.className = 'item';
-        el.innerHTML = `
+        // show undo only if backend supports status and row is deleted (e.g. "Deleted")
+        const showUndo = t.status && String(t.status).toLowerCase().includes('deleted');
+        const rowHtml = document.createElement('div');
+        rowHtml.className = 'item';
+        rowHtml.innerHTML = `
           <div>
             <strong>${escapeHtml(t.name)}</strong><br>
             ${escapeHtml(t.phone)} • Room ${escapeHtml(t.room)} • Bed ${escapeHtml(t.bed)} • ${escapeHtml(t.rentStatus)}
@@ -304,60 +277,58 @@ function renderTenantList(){
           <div>
             <button class="small-btn edit" onclick="startEdit('${t.id}')">Edit</button>
             <button class="small-btn remove" onclick="softDelete('${t.id}')">Delete</button>
-            <button class="small-btn undo" onclick="restoreTenant('${t.id}')">Undo</button>
+            ${ showUndo ? `<button class="small-btn undo" onclick="restoreTenant('${t.id}')">Undo</button>` : '' }
           </div>
         `;
-        tenantListContainer.appendChild(el);
+        tenantListEl.appendChild(rowHtml);
       });
     }
 
-    // pagination buttons
+    // pagination
     paginationEl.innerHTML = '';
     for(let i=1;i<=pages;i++){
       const b = document.createElement('button');
       b.textContent = i;
-      b.className = (i===currentPage ? 'active' : '');
-      b.onclick = ()=> { currentPage = i; renderTenantList(); };
+      if(i === currentPage) b.classList.add('active');
+      b.onclick = ()=>{ currentPage = i; renderTenantList(); };
       paginationEl.appendChild(b);
     }
-
   } catch(err){
     console.error('renderTenantList error', err);
-    tenantListContainer.innerHTML = '<div style="color:#b91c1c">Error rendering tenants</div>';
+    tenantListEl.innerHTML = '<div style="color:#b91c1c">Error rendering list</div>';
   }
 }
 
-/* ---------- populate filter rooms (only rooms present) ---------- */
+/* populate filter rooms (rooms that exist in data) */
 function populateFilterRoom(){
   const present = Array.from(new Set(tenantData.map(t=>t.room).filter(Boolean))).sort();
   filterRoom.innerHTML = '<option value="">All Rooms</option>';
-  present.forEach(r => filterRoom.innerHTML += `<option value="${r}">${r}</option>`);
+  present.forEach(r=> filterRoom.innerHTML += `<option value="${r}">${r}</option>`);
 }
 
-/* ---------- start Edit (prefill add form) ---------- */
+/* start edit: prefill Add form */
 function startEdit(id){
-  const t = tenantData.find(x => String(x.id) === String(id));
+  const t = tenantData.find(x => String(x.id) === String(id) || String(x.rowNum) === String(id));
   if(!t){ alert('Tenant not found'); return; }
 
-  // prefill form
-  document.getElementById('name').value = t.name;
-  document.getElementById('phone').value = t.phone;
+  document.getElementById('name').value = t.name || '';
+  document.getElementById('phone').value = t.phone || '';
   document.getElementById('moveIn').value = t.moveIn || '';
   document.getElementById('moveOut').value = t.moveOut || '';
   document.getElementById('rent').value = t.rent || '';
   document.getElementById('rentStatus').value = t.rentStatus || 'Pending';
   document.getElementById('room').value = t.room || '';
   document.getElementById('bed').value = t.bed || '';
-  editIdInput.value = t.id || '';
+  editIdInput.value = t.id || t.rowNum || '';
 
-  // change UI
   formTitle.textContent = '✏️ Edit Tenant';
   saveBtn.textContent = 'Update Tenant';
+
   showSection('add');
-  showToast('Editing tenant — make changes and Save');
+  formMsg.textContent = 'Editing — make changes and Save';
 }
 
-/* ---------- reset form ---------- */
+/* reset form */
 function resetForm(){
   tenantForm.reset();
   editIdInput.value = '';
@@ -366,15 +337,15 @@ function resetForm(){
   formMsg.textContent = '';
 }
 
-/* ---------- save handler (add or edit) ---------- */
+/* Save (Add or Edit) */
 tenantForm.addEventListener('submit', async (ev) => {
   ev.preventDefault();
   if(isSubmitting) return;
   isSubmitting = true;
   saveBtn.disabled = true;
 
-  try {
-    // refresh tenantData for validation
+  try{
+    // refresh to validate
     await loadTenants();
 
     const payload = {
@@ -389,34 +360,38 @@ tenantForm.addEventListener('submit', async (ev) => {
     };
 
     if(!payload.name || !payload.phone || !payload.room || !payload.bed){
-      showToast('Please fill required fields', false);
+      formMsg.style.color = '#b91c1c';
+      formMsg.textContent = 'Please fill required fields';
       return;
     }
 
-    // handle max 4 per room properly (exclude editing record)
     const editingId = editIdInput.value || null;
-    const occupants = tenantData.filter(t => t.room === payload.room && t.id !== editingId).length;
+    // occupants excluding currently edited
+    const occupants = tenantData.filter(t => t.room === payload.room && String(t.id) !== String(editingId)).length;
     if(occupants >= 4){
-      showToast('Room already has 4 tenants', false);
+      formMsg.style.color = '#b91c1c';
+      formMsg.textContent = 'Room already has 4 tenants';
       return;
     }
 
-    // bed uniqueness within room (exclude editing record)
-    const bedTaken = tenantData.some(t => t.room === payload.room && t.bed === payload.bed && t.id !== editingId);
+    const bedTaken = tenantData.some(t => t.room === payload.room && String(t.bed) === String(payload.bed) && String(t.id) !== String(editingId));
     if(bedTaken){
-      showToast('Selected bed already occupied in this room', false);
+      formMsg.style.color = '#b91c1c';
+      formMsg.textContent = 'Selected bed is already occupied';
       return;
     }
 
     if(editingId){
-      // edit
+      // edit via POST to ?action=edit
       payload.id = editingId;
       await apiFetch('edit', { method:'POST', body: payload });
-      showToast('Tenant updated');
+      formMsg.style.color = '#065f46';
+      formMsg.textContent = 'Tenant updated';
     } else {
-      // add
+      // add via POST to ?action=add
       await apiFetch('add', { method:'POST', body: payload });
-      showToast('Tenant added');
+      formMsg.style.color = '#065f46';
+      formMsg.textContent = 'Tenant added';
     }
 
     resetForm();
@@ -425,65 +400,64 @@ tenantForm.addEventListener('submit', async (ev) => {
 
   } catch(err){
     console.error('save error', err);
-    showToast('Failed to save (check deployment)', false);
+    formMsg.style.color = '#b91c1c';
+    formMsg.textContent = 'Save failed — check deployment';
   } finally {
     isSubmitting = false;
     saveBtn.disabled = false;
+    setTimeout(()=> formMsg.textContent = '', 2500);
   }
 });
 
-/* ---------- soft delete ---------- */
+/* Soft delete using id (works whether id is RowId or row number) */
 async function softDelete(id){
-  if(!confirm('Mark this tenant as deleted? You can undo later.')) return;
+  if(!confirm('Mark tenant deleted? You can restore later.')) return;
   try{
-    await apiFetch(`delete`, { method: 'GET', /*no body*/ });
-    // Note: Apps Script expects ?action=delete&id=... so use fetch directly:
+    // call the delete endpoint with id query param
     await fetch(`${SCRIPT_URL}?action=delete&id=${encodeURIComponent(id)}`);
-    showToast('Tenant marked deleted (undo available)');
+    // reload
     await loadTenants();
-  }catch(err){
-    console.error('softDelete error', err);
-    showToast('Delete failed', false);
+    formMsg.style.color = '#065f46';
+    formMsg.textContent = 'Tenant marked deleted';
+    setTimeout(()=> formMsg.textContent = '', 2000);
+  } catch(err){
+    console.error('delete error', err);
+    formMsg.style.color = '#b91c1c';
+    formMsg.textContent = 'Delete failed';
   }
 }
 
-/* ---------- restore ---------- */
+/* Restore (only works if backend supports restore) */
 async function restoreTenant(id){
   try{
     await fetch(`${SCRIPT_URL}?action=restore&id=${encodeURIComponent(id)}`);
-    showToast('Tenant restored');
     await loadTenants();
-  }catch(err){
+    formMsg.style.color = '#065f46';
+    formMsg.textContent = 'Tenant restored';
+    setTimeout(()=> formMsg.textContent = '', 2000);
+  } catch(err){
     console.error('restore error', err);
-    showToast('Restore failed', false);
+    formMsg.style.color = '#b91c1c';
+    formMsg.textContent = 'Restore failed or unsupported';
   }
 }
 
-/* ---------- helpers ---------- */
-function showToast(msg, success=true){
-  formMsg.style.color = success ? '#065f46' : '#b91c1c';
-  formMsg.textContent = msg;
-  setTimeout(()=> { if(formMsg.textContent === msg) formMsg.textContent = ''; }, 3000);
-}
-function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* ---------- small event hookups ---------- */
+/* small helpers */
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 searchInput.addEventListener('input', ()=>{ currentPage = 1; renderTenantList(); });
 filterRoom.addEventListener('change', ()=>{ currentPage = 1; renderTenantList(); });
+clearBtn.addEventListener('click', ()=> resetForm());
 
-/* ---------- pagination helper ---------- */
-function gotoPage(n){ currentPage = n; renderTenantList(); }
-
-/* ---------- initial load ---------- */
+/* initial bootstrap: load tenants + dashboard */
 (async function init(){
   try{ await loadTenants(); await loadDashboard(); } catch(e){ console.warn(e); }
 })();
 
-/* ---------- export helpers to window so inline onclick works ---------- */
+// expose for inline onclicks
 window.startEdit = startEdit;
 window.softDelete = softDelete;
 window.restoreTenant = restoreTenant;
-window.gotoPage = gotoPage;
+window.showSection = showSection;
 
 </script>
 </body>
