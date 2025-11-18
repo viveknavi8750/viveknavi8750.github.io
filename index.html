@@ -357,11 +357,16 @@ document.getElementById("filter-room").onchange = renderList;
 
 
 /* ---------------- Delete Tenant ---------------- */
-async function deleteTenant(row){
-  if(!confirm("Delete this tenant?")) return;
-  await api("delete","GET",{id:row});
+async function deleteTenant(rowId) {
+  if (!confirm("Mark this tenant as deleted?")) return;
+
+  await fetch(`${SCRIPT_URL}?action=delete&id=${rowId}`);
+
+  alert("Tenant deleted (soft delete). You can restore it.");
+
   loadTenants();
 }
+
 
 /* ---------------- Edit Tenant (future expansion) ---------------- */
 function editTenant(row){
@@ -372,4 +377,5 @@ loadDashboard();
 </script>
 </body>
 </html>
+
 
