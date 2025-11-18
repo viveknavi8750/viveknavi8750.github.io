@@ -353,7 +353,8 @@ function gotoPage(p){
 }
 
 search.oninput = renderList;
-filter-room?.onchange = renderList;
+document.getElementById("filter-room").onchange = renderList;
+
 
 /* ---------------- Delete Tenant ---------------- */
 async function deleteTenant(row){
@@ -371,3 +372,4 @@ loadDashboard();
 </script>
 </body>
 </html>
+
