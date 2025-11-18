@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PG Tenant Manager — Final</title>
+<title>PG Tenant Manager — Corrected UI</title>
 <style>
   :root{ --accent:#0a84ff; --muted:#6b7280; }
   body{ margin:0; font-family:Inter,Arial,sans-serif; background:#f3f4f6; color:#0f172a; }
@@ -19,7 +19,7 @@
   .btn{ background:var(--accent); color:#fff; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; }
   .item{ display:flex; justify-content:space-between; align-items:center; padding:12px; border-radius:8px; background:#f9fafb; border:1px solid #e5e7eb; margin-bottom:10px; }
   .small-btn{ padding:6px 10px; border:none; border-radius:8px; cursor:pointer; margin-left:6px; font-size:13px; }
-  .edit{ background:#059669; color:#fff; } .remove{ background:#ef4444; color:#fff; } .undo{ background:#6b7280; color:#fff; }
+  .edit{ background:#059669; color:#fff; } .remove{ background:#ef4444; color:#fff; }
   .pagination button{ padding:6px 10px; margin:2px; border-radius:6px; border:1px solid #e6e7eb; background:#fff; cursor:pointer; }
   .pagination button.active{ background:var(--accent); color:#fff; }
   @media(max-width:900px){ .row{ grid-template-columns:1fr; } .sidebar{ display:none; } }
@@ -44,7 +44,7 @@
     <section id="section-add" class="card" style="display:none">
       <h2 id="formTitle" style="margin:0 0 12px 0">➕ Add Tenant</h2>
       <form id="tenantForm" autocomplete="off">
-        <input type="hidden" id="editId" value="">
+        <input type="hidden" id="editRow" value="">
         <div class="row">
           <div>
             <label for="name">Name</label>
@@ -128,7 +128,7 @@ const sectionAdd = document.getElementById('section-add');
 const sectionList = document.getElementById('section-list');
 
 const tenantForm = document.getElementById('tenantForm');
-const editIdInput = document.getElementById('editId');
+const editRowInput = document.getElementById('editRow');
 const formTitle = document.getElementById('formTitle');
 const formMsg = document.getElementById('formMsg');
 const saveBtn = document.getElementById('saveBtn');
@@ -209,19 +209,18 @@ async function loadTenants(){
 
     // normalize server array -> tenantData
     if(!Array.isArray(data)) {
-      // if server returns object wrapper
       tenantData = Array.isArray(data.items) ? data.items : [];
     } else {
       tenantData = data;
     }
 
-    // Normalization: prefer server-provided id (RowId or id), fallback to row
+    // Normalize: ensure row (sheet row) exists and is numeric, id (RowId) exists
     tenantData = tenantData.map(r => {
-      // possible keys: r.id, r.row, r.RowId, r.rowId
-      const id = (r.id || r.id === 0) ? String(r.id) : ((r.row || r.row === 0) ? String(r.row) : (r.RowId||r.rowId ? String(r.RowId||r.rowId) : ''));
+      const rowNum = r.row || r.rowNum || (r.rowNumber ? r.rowNumber : null);
+      const id = r.id || r.RowId || r.rowId || (rowNum ? String(rowNum) : '');
       return {
-        id: id,
-        rowNum: r.row || null,
+        row: Number(rowNum) || null,    // sheet row number (used for delete/edit)
+        id: String(id||''),
         name: r.name || r.Name || '',
         phone: r.phone || r.Phone || '',
         moveIn: r.moveIn || r.MoveIn || r.movein || '',
@@ -229,9 +228,7 @@ async function loadTenants(){
         rent: r.rent || r.Rent || '',
         rentStatus: r.rentStatus || r.RentStatus || 'Pending',
         bed: String(r.bed || r.Bed || '').trim(),
-        room: String(r.room || r.Room || '').trim(),
-        // support status column names if present
-        status: (r.Status || r.status || r.IsDeleted || r.isDeleted || r.statusText) || ''
+        room: String(r.room || r.Room || '').trim()
       };
     });
 
@@ -265,8 +262,6 @@ function renderTenantList(){
       tenantListEl.innerHTML = '<div style="padding:12px;color:#6b7280">No tenants found</div>';
     } else {
       pageData.forEach(t => {
-        // show undo only if backend supports status and row is deleted (e.g. "Deleted")
-        const showUndo = t.status && String(t.status).toLowerCase().includes('deleted');
         const rowHtml = document.createElement('div');
         rowHtml.className = 'item';
         rowHtml.innerHTML = `
@@ -275,9 +270,8 @@ function renderTenantList(){
             ${escapeHtml(t.phone)} • Room ${escapeHtml(t.room)} • Bed ${escapeHtml(t.bed)} • ${escapeHtml(t.rentStatus)}
           </div>
           <div>
-            <button class="small-btn edit" onclick="startEdit('${t.id}')">Edit</button>
-            <button class="small-btn remove" onclick="softDelete('${t.id}')">Delete</button>
-            ${ showUndo ? `<button class="small-btn undo" onclick="restoreTenant('${t.id}')">Undo</button>` : '' }
+            <button class="small-btn edit" onclick="startEdit(${t.row})">Edit</button>
+            <button class="small-btn remove" onclick="softDelete(${t.row})">Delete</button>
           </div>
         `;
         tenantListEl.appendChild(rowHtml);
@@ -306,9 +300,9 @@ function populateFilterRoom(){
   present.forEach(r=> filterRoom.innerHTML += `<option value="${r}">${r}</option>`);
 }
 
-/* start edit: prefill Add form */
-function startEdit(id){
-  const t = tenantData.find(x => String(x.id) === String(id) || String(x.rowNum) === String(id));
+/* start edit: prefill Add form — uses sheet row number to find record */
+function startEdit(rowNum){
+  const t = tenantData.find(x => Number(x.row) === Number(rowNum));
   if(!t){ alert('Tenant not found'); return; }
 
   document.getElementById('name').value = t.name || '';
@@ -319,7 +313,7 @@ function startEdit(id){
   document.getElementById('rentStatus').value = t.rentStatus || 'Pending';
   document.getElementById('room').value = t.room || '';
   document.getElementById('bed').value = t.bed || '';
-  editIdInput.value = t.id || t.rowNum || '';
+  editRowInput.value = t.row || '';
 
   formTitle.textContent = '✏️ Edit Tenant';
   saveBtn.textContent = 'Update Tenant';
@@ -331,13 +325,13 @@ function startEdit(id){
 /* reset form */
 function resetForm(){
   tenantForm.reset();
-  editIdInput.value = '';
+  editRowInput.value = '';
   formTitle.textContent = '➕ Add Tenant';
   saveBtn.textContent = 'Save Tenant';
   formMsg.textContent = '';
 }
 
-/* Save (Add or Edit) */
+/* Save (Add or Edit) — sends row for edit */
 tenantForm.addEventListener('submit', async (ev) => {
   ev.preventDefault();
   if(isSubmitting) return;
@@ -345,8 +339,7 @@ tenantForm.addEventListener('submit', async (ev) => {
   saveBtn.disabled = true;
 
   try{
-    // refresh to validate
-    await loadTenants();
+    await loadTenants(); // refresh for validation
 
     const payload = {
       name: document.getElementById('name').value.trim(),
@@ -365,30 +358,27 @@ tenantForm.addEventListener('submit', async (ev) => {
       return;
     }
 
-    const editingId = editIdInput.value || null;
-    // occupants excluding currently edited
-    const occupants = tenantData.filter(t => t.room === payload.room && String(t.id) !== String(editingId)).length;
+    const editingRow = editRowInput.value ? Number(editRowInput.value) : null;
+    const occupants = tenantData.filter(t => t.room === payload.room && t.row !== editingRow).length;
     if(occupants >= 4){
       formMsg.style.color = '#b91c1c';
       formMsg.textContent = 'Room already has 4 tenants';
       return;
     }
 
-    const bedTaken = tenantData.some(t => t.room === payload.room && String(t.bed) === String(payload.bed) && String(t.id) !== String(editingId));
+    const bedTaken = tenantData.some(t => t.room === payload.room && String(t.bed) === String(payload.bed) && t.row !== editingRow);
     if(bedTaken){
       formMsg.style.color = '#b91c1c';
       formMsg.textContent = 'Selected bed is already occupied';
       return;
     }
 
-    if(editingId){
-      // edit via POST to ?action=edit
-      payload.id = editingId;
+    if(editingRow){
+      payload.row = editingRow; // send sheet row number to backend
       await apiFetch('edit', { method:'POST', body: payload });
       formMsg.style.color = '#065f46';
       formMsg.textContent = 'Tenant updated';
     } else {
-      // add via POST to ?action=add
       await apiFetch('add', { method:'POST', body: payload });
       formMsg.style.color = '#065f46';
       formMsg.textContent = 'Tenant added';
@@ -409,13 +399,11 @@ tenantForm.addEventListener('submit', async (ev) => {
   }
 });
 
-/* Soft delete using id (works whether id is RowId or row number) */
-async function softDelete(id){
-  if(!confirm('Mark tenant deleted? You can restore later.')) return;
+/* Soft delete using sheet row number */
+async function softDelete(rowNum){
+  if(!confirm('Mark tenant deleted? You can restore later from sheet if needed.')) return;
   try{
-    // call the delete endpoint with id query param
-    await fetch(`${SCRIPT_URL}?action=delete&id=${encodeURIComponent(id)}`);
-    // reload
+    await fetch(`${SCRIPT_URL}?action=delete&id=${encodeURIComponent(rowNum)}`);
     await loadTenants();
     formMsg.style.color = '#065f46';
     formMsg.textContent = 'Tenant marked deleted';
@@ -427,36 +415,20 @@ async function softDelete(id){
   }
 }
 
-/* Restore (only works if backend supports restore) */
-async function restoreTenant(id){
-  try{
-    await fetch(`${SCRIPT_URL}?action=restore&id=${encodeURIComponent(id)}`);
-    await loadTenants();
-    formMsg.style.color = '#065f46';
-    formMsg.textContent = 'Tenant restored';
-    setTimeout(()=> formMsg.textContent = '', 2000);
-  } catch(err){
-    console.error('restore error', err);
-    formMsg.style.color = '#b91c1c';
-    formMsg.textContent = 'Restore failed or unsupported';
-  }
-}
-
-/* small helpers */
+/* helpers */
 function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 searchInput.addEventListener('input', ()=>{ currentPage = 1; renderTenantList(); });
 filterRoom.addEventListener('change', ()=>{ currentPage = 1; renderTenantList(); });
 clearBtn.addEventListener('click', ()=> resetForm());
 
-/* initial bootstrap: load tenants + dashboard */
+/* initial bootstrap */
 (async function init(){
   try{ await loadTenants(); await loadDashboard(); } catch(e){ console.warn(e); }
 })();
 
-// expose for inline onclicks
+// expose functions for inline onclick handlers
 window.startEdit = startEdit;
 window.softDelete = softDelete;
-window.restoreTenant = restoreTenant;
 window.showSection = showSection;
 
 </script>
