@@ -1,381 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>PG Tenant Manager</title>
+<meta charset="utf-8" />
+<title>PG Tenant Manager — Edit in Add Form</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f4f6f8;
-}
-.container{
-  display:flex;
-  height:100vh;
-}
-.sidebar{
-  width:220px;
-  background:#111827;
-  color:white;
-  padding:20px 10px;
-  display:flex;
-  flex-direction:column;
-}
-.sidebar button{
-  background:none;
-  border:none;
-  color:white;
-  padding:12px;
-  text-align:left;
-  font-size:15px;
-  margin:4px 0;
-  cursor:pointer;
-  border-radius:6px;
-}
-.sidebar button.active,
-.sidebar button:hover{
-  background:#1f2937;
-}
-.main{
-  flex:1;
-  padding:20px;
-  overflow:auto;
-}
-
-/* Card */
-.card{
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
-  margin-bottom:20px;
-}
-
-/* Input */
-input, select{
-  width:100%;
-  padding:10px;
-  margin-bottom:10px;
-  border:1px solid #d1d5db;
-  border-radius:6px;
-  font-size:15px;
-}
-label{
-  font-size:14px;
-  font-weight:bold;
-}
-
-/* Button */
-.btn{
-  background:#2563eb;
-  border:none;
-  color:white;
-  padding:10px 20px;
-  font-size:15px;
-  border-radius:6px;
-  cursor:pointer;
-}
-.btn:hover{
-  background:#1d4ed8;
-}
-
-/* List */
-.item{
-  background:#f9fafb;
-  padding:14px;
-  border-radius:8px;
-  border:1px solid #e5e7eb;
-  margin-bottom:12px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-.small-btn{
-  padding:6px 10px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:13px;
-  margin-left:6px;
-}
-.edit{ background:#10b981; color:white; }
-.remove{ background:#ef4444; color:white; }
-
-/* Pagination */
-.pagination button{
-  padding:6px 10px;
-  margin:2px;
-  border:1px solid #d1d5db;
-  border-radius:6px;
-  background:white;
-}
-.pagination button.active{
-  background:#2563eb !important;
-  color:white !important;
-}
-
-/* Dashboard blocks */
-.stat-box{
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  text-align:center;
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
-  margin-bottom:20px;
-}
-.stat-number{
-  font-size:30px;
-  font-weight:bold;
-}
+  body{ margin:0; font-family:Arial,Helvetica,sans-serif; background:#f4f6f8; color:#0f172a; }
+  .container{ display:flex; height:100vh; }
+  .sidebar{ width:220px; background:#111827; color:white; padding:18px; display:flex; flex-direction:column; gap:8px; }
+  .sidebar button{ background:#0b1220; color:#e5e7eb; border:none; padding:10px; border-radius:8px; cursor:pointer; text-align:left; }
+  .sidebar button.active{ background:#0f1724; }
+  .main{ flex:1; padding:20px; overflow:auto; }
+  .card{ background:white; padding:16px; border-radius:10px; box-shadow:0 6px 18px rgba(15,23,42,0.06); margin-bottom:16px; }
+  .row{ display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+  label{ display:block; margin:6px 0 4px; font-size:13px; color:#374151; }
+  input,select{ width:100%; padding:10px; border-radius:8px; border:1px solid #e6e7eb; font-size:14px; background:#fff; }
+  .btn{ background:#0a84ff; color:white; border:none; padding:10px 14px; border-radius:9px; cursor:pointer; }
+  .controls{ display:flex; gap:12px; align-items:center; }
+  .item{ background:#f9fafb; padding:12px; border-radius:8px; border:1px solid #e5e7eb; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
+  .small-btn{ padding:6px 8px; border-radius:8px; border:none; cursor:pointer; margin-left:6px; }
+  .edit{ background:#059669; color:white; }
+  .remove{ background:#ef4444; color:white; }
+  .undo{ background:#6b7280; color:white; }
+  .badge{ display:inline-block; padding:6px 8px; border-radius:999px; background:#eef2ff; color:#1e3a8a; margin-right:6px; }
+  .pagination button{ padding:6px 10px; margin:2px; border-radius:6px; border:1px solid #e6e7eb; cursor:pointer; background:white; }
+  .pagination button.active{ background:#0a84ff; color:white; }
+  @media(max-width:900px){ .row{ grid-template-columns:1fr; } .sidebar{ display:none; } }
 </style>
 </head>
-
 <body>
 <div class="container">
+  <aside class="sidebar">
+    <h3 style="margin:0 0 8px 0">PG Manager</h3>
+    <button id="nav-dashboard" class="active" onclick="showSection('dashboard')">📊 Dashboard</button>
+    <button id="nav-add" onclick="showSection('add')">➕ Add Tenant</button>
+    <button id="nav-list" onclick="showSection('list')">👥 Show Tenants</button>
+    <div style="margin-top:auto; font-size:12px; color:#9ca3af">Rooms: 101–106,201–206,...,601–603</div>
+  </aside>
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <button onclick="showSection('dashboard')" id="btn-dashboard" class="active">📊 Dashboard</button>
-    <button onclick="showSection('add')" id="btn-add">➕ Add Tenant</button>
-    <button onclick="showSection('list')" id="btn-list">👥 Show Tenants</button>
-  </div>
-
-  <!-- Main Content -->
-  <div class="main">
-
+  <main class="main">
     <!-- Dashboard -->
-    <div id="section-dashboard" class="card">
-      <h2>📊 PG Dashboard</h2>
-      <div id="dashboard-content">Loading...</div>
-    </div>
+    <section id="section-dashboard" class="card">
+      <h2 style="margin:0 0 12px 0">Occupancy Dashboard</h2>
+      <div id="dashboardContent">Loading...</div>
+    </section>
 
-    <!-- Add Tenant -->
-    <div id="section-add" class="card" style="display:none;">
-      <h2>➕ Add Tenant</h2>
+    <!-- Add / Edit Form -->
+    <section id="section-add" class="card" style="display:none">
+      <h2 id="formTitle" style="margin:0 0 12px 0">➕ Add Tenant</h2>
 
-      <form id="tenantForm">
-        <label>Name</label>
-        <input type="text" id="name" required>
+      <form id="tenantForm" autocomplete="off">
+        <!-- hidden id for edits -->
+        <input type="hidden" id="editId" value="">
 
-        <label>Phone</label>
-        <input type="text" id="phone" required>
+        <div class="row">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" type="text" required />
+          </div>
+          <div>
+            <label for="phone">Phone</label>
+            <input id="phone" type="text" required />
+          </div>
 
-        <label>Room</label>
-        <select id="room" required></select>
+          <div>
+            <label for="moveIn">Move-in Date</label>
+            <input id="moveIn" type="date" />
+          </div>
+          <div>
+            <label for="moveOut">Move-out Date</label>
+            <input id="moveOut" type="date" />
+          </div>
 
-        <label>Bed (1–4)</label>
-        <select id="bed" required>
-          <option value="">Select Bed</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-        </select>
+          <div>
+            <label for="rent">Monthly Rent</label>
+            <input id="rent" type="number" />
+          </div>
+          <div>
+            <label for="rentStatus">Rent Status</label>
+            <select id="rentStatus"><option>Pending</option><option>Paid</option></select>
+          </div>
 
-        <label>Move In</label>
-        <input type="date" id="moveIn">
+          <div>
+            <label for="room">Room</label>
+            <select id="room" required></select>
+          </div>
+          <div>
+            <label for="bed">Bed (1–4)</label>
+            <select id="bed" required><option value="">Select bed</option><option>1</option><option>2</option><option>3</option><option>4</option></select>
+          </div>
+        </div>
 
-        <label>Move Out</label>
-        <input type="date" id="moveOut">
-
-        <label>Rent</label>
-        <input type="number" id="rent">
-
-        <label>Rent Status</label>
-        <select id="rentStatus">
-          <option>Paid</option>
-          <option>Pending</option>
-        </select>
-
-        <button class="btn" type="submit">Save Tenant</button>
+        <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+          <button class="btn" type="submit" id="saveBtn">Save Tenant</button>
+          <button type="button" id="cancelBtn" style="background:#f3f4f6; border:1px solid #e6e7eb; padding:10px 12px; border-radius:8px">Clear</button>
+          <div id="formMsg" style="margin-left:12px;color:#065f46"></div>
+        </div>
       </form>
-    </div>
+    </section>
 
-    <!-- Tenant List -->
-    <div id="section-list" class="card" style="display:none;">
-      <h2>👥 Tenants</h2>
+    <!-- List -->
+    <section id="section-list" class="card" style="display:none">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+        <h2 style="margin:0">👥 Tenants</h2>
+        <div class="controls">
+          <input id="search" placeholder="Search name / phone / room" style="padding:8px;border-radius:8px;border:1px solid #e6e7eb" />
+          <select id="filterRoom" style="padding:8px;border-radius:8px;border:1px solid #e6e7eb"><option value="">All Rooms</option></select>
+        </div>
+      </div>
 
-      <input type="text" id="search" placeholder="Search name / phone / room">
-      <select id="filter-room"></select>
+      <div id="tenantListContainer"></div>
+      <div id="pagination" style="margin-top:12px" class="pagination"></div>
+    </section>
 
-      <div id="tenant-list"></div>
-
-      <div class="pagination" id="pagination"></div>
-    </div>
-
-  </div>
+  </main>
 </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeYacsS876b0w1-pytYjPgo7XUAfsnLpkFoFgmPiOQDX0KunscC0ts5O57cUIDQ3zStA/exec";   // <<< CHANGE THIS LINE ONLY
-const rooms = ["101","102","103","104","105","106","201","202","203","204","205","206",
-"301","302","303","304","305","306","401","402","403","404","405","406",
-"501","502","503","504","505","506","601","602","603"];
+/* ====== CONFIG: set your deployed Apps Script Web App URL here ====== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyeYacsS876b0w1-pytYjPgo7XUAfsnLpkFoFgmPiOQDX0KunscC0ts5O57cUIDQ3zStA/exec";
+/* ================================================================== */
 
-const tenants=[];
-let currentPage=1;
-const perPage=8;
+const ROOMS = ['101','102','103','104','105','106','201','202','203','204','205','206','301','302','303','304','305','306','401','402','403','404','405','406','501','502','503','504','505','506','601','602','603'];
 
-/* ---------------- Nav ---------------- */
-function showSection(sec){
-  document.querySelectorAll('.sidebar button').forEach(b=>b.classList.remove('active'));
-  document.querySelector('#btn-'+sec).classList.add('active');
+let tenantData = [];       // normalized array from server
+let currentPage = 1;
+const itemsPerPage = 6;
+let isSubmitting = false;
 
-  document.querySelectorAll('.card').forEach(c=>c.style.display='none');
-  document.querySelector('#section-'+sec).style.display='block';
+/* ---------- DOM refs ---------- */
+const navDashboard = document.getElementById('nav-dashboard');
+const navAdd = document.getElementById('nav-add');
+const navList = document.getElementById('nav-list');
 
-  if(sec==='list') loadTenants();
-  if(sec==='dashboard') loadDashboard();
-}
+const sectionDashboard = document.getElementById('section-dashboard');
+const sectionAdd = document.getElementById('section-add');
+const sectionList = document.getElementById('section-list');
 
-/* -------------- Populate rooms -------------- */
+const tenantForm = document.getElementById('tenantForm');
+const editIdInput = document.getElementById('editId');
+const formTitle = document.getElementById('formTitle');
+const formMsg = document.getElementById('formMsg');
+const saveBtn = document.getElementById('saveBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+
+const searchInput = document.getElementById('search');
+const filterRoom = document.getElementById('filterRoom');
+const tenantListContainer = document.getElementById('tenantListContainer');
+const paginationEl = document.getElementById('pagination');
+
+/* ---------- init rooms in selects ---------- */
 function initRooms(){
-  let roomSelect=document.getElementById("room");
-  let filter=document.getElementById("filter-room");
-  rooms.forEach(r=>{
-    roomSelect.innerHTML+=`<option>${r}</option>`;
-    filter.innerHTML+=`<option value="${r}">${r}</option>`;
+  const roomSelect = document.getElementById('room');
+  roomSelect.innerHTML = '<option value=\"\">Select Room</option>';
+  ROOMS.forEach(r => {
+    roomSelect.innerHTML += `<option value="${r}">${r}</option>`;
   });
-  filter.innerHTML=`<option value="">All Rooms</option>`+filter.innerHTML;
+
+  // filter select
+  filterRoom.innerHTML = '<option value="">All Rooms</option>';
+  ROOMS.forEach(r => filterRoom.innerHTML += `<option value="${r}">${r}</option>`);
 }
 initRooms();
 
-/* ---------------- API wrapper ---------------- */
-async function api(action, method="GET", body=null){
-  let opts={ method };
-  if(body){
-    opts.headers={"Content-Type":"application/json"};
-    opts.body=JSON.stringify(body);
+/* ---------- navigation ---------- */
+function clearActiveNav(){ navDashboard.classList.remove('active'); navAdd.classList.remove('active'); navList.classList.remove('active'); }
+function showSection(which){
+  clearActiveNav();
+  sectionDashboard.style.display = 'none';
+  sectionAdd.style.display = 'none';
+  sectionList.style.display = 'none';
+
+  if(which === 'dashboard'){
+    navDashboard.classList.add('active');
+    sectionDashboard.style.display = 'block';
+    loadDashboard();
+  } else if(which === 'add'){
+    navAdd.classList.add('active');
+    sectionAdd.style.display = 'block';
+    // clear edit state
+    resetForm();
+  } else {
+    navList.classList.add('active');
+    sectionList.style.display = 'block';
+    loadTenants();
   }
-  let res = await fetch(`${SCRIPT_URL}?action=${action}`, opts);
-  return res.json();
+}
+// init to dashboard
+showSection('dashboard');
+
+/* ---------- API helpers ---------- */
+async function apiFetch(action, opts = {}){
+  // action as query param for both GET and POST
+  const url = `${SCRIPT_URL}?action=${action}`;
+  const finalOpts = Object.assign({}, opts);
+  // if opts.body is object, stringify and set header
+  if(finalOpts.body && typeof finalOpts.body === 'object'){
+    finalOpts.headers = Object.assign({}, finalOpts.headers || {}, {'Content-Type':'application/json'});
+    finalOpts.body = JSON.stringify(finalOpts.body);
+  }
+  const res = await fetch(url, finalOpts);
+  if(!res.ok) throw new Error('Network response not ok: ' + res.status);
+  const text = await res.text();
+  try { return JSON.parse(text); } catch(e) { return text; }
 }
 
-/* ---------------- Load Dashboard ---------------- */
+/* ---------- Dashboard ---------- */
 async function loadDashboard(){
-  let d = await api("dashboard");
-  let h = `
-    <div class='stat-box'>
-      <div class='stat-number'>${Object.values(d.floors).reduce((a,b)=>a+b,0)}</div>
-      Total Tenants
-    </div>
-  `;
-  document.getElementById("dashboard-content").innerHTML=h;
-}
+  try{
+    document.getElementById('dashboardContent').textContent = 'Loading...';
+    const data = await apiFetch('dashboard', { method: 'GET' });
+    // data: { floors: {...}, rooms: {...}, rentStatus: {...} }
+    const total = Object.values(data.floors || {}).reduce((a,b)=>a+b,0) || 0;
+    const paid = (data.rentStatus && data.rentStatus.Paid) || 0;
+    const pending = (data.rentStatus && data.rentStatus.Pending) || 0;
 
-/* ---------------- Add Tenant ---------------- */
-document.getElementById("tenantForm").addEventListener("submit", async (e)=>{
-  e.preventDefault();
-
-  let payload={
-    name: name.value,
-    phone: phone.value,
-    room: room.value,
-    bed: bed.value,
-    moveIn: moveIn.value,
-    moveOut: moveOut.value,
-    rent: rent.value,
-    rentStatus: rentStatus.value
-  };
-
-  // check bed count
-  let count = tenants.filter(t=>t.room===payload.room).length;
-  if(count>=4){
-    alert("This room already has 4 tenants!");
-    return;
-  }
-
-  await api("add","POST",payload);
-
-  e.target.reset();
-  alert("Tenant added!");
-
-  loadTenants();
-});
-
-/* ---------------- Load Tenants ---------------- */
-async function loadTenants(){
-  let data = await api("list");
-  tenants.length=0;
-  data.forEach(t=>tenants.push(t));
-
-  renderList();
-}
-
-/* ---------------- Render Tenant List ---------------- */
-function renderList(){
-  let q = search.value.toLowerCase();
-  let fr = document.getElementById("filter-room").value;
-
-  let filtered = tenants.filter(t=>
-    (t.name.toLowerCase().includes(q) ||
-     t.phone.includes(q) ||
-     t.room.includes(q)) &&
-    (fr==="" || t.room===fr)
-  );
-
-  let total=filtered.length;
-  let pages=Math.ceil(total/perPage);
-  if(currentPage>pages) currentPage=1;
-
-  let start=(currentPage-1)*perPage;
-  let pageData=filtered.slice(start,start+perPage);
-
-  let list=document.getElementById("tenant-list");
-  list.innerHTML="";
-
-  pageData.forEach(t=>{
-    list.innerHTML+=`
-      <div class="item">
-        <div>
-          <strong>${t.name}</strong><br>
-          ${t.phone} | Room ${t.room} | Bed ${t.bed}
+    const html = `
+      <div style="display:flex; gap:12px; flex-wrap:wrap">
+        <div class="stat-box" style="flex:1">
+          <div style="font-size:28px; font-weight:700">${total}</div>
+          <div>Total Tenants</div>
         </div>
-        <div>
-          <button class="small-btn edit" onclick="editTenant(${t.row})">Edit</button>
-          <button class="small-btn remove" onclick="deleteTenant(${t.row})">Delete</button>
+        <div class="stat-box" style="flex:1">
+          <div style="font-size:22px; font-weight:700; color:${paid? '#059669':'#374151'}">${paid}</div>
+          <div>Rent Paid</div>
+        </div>
+        <div class="stat-box" style="flex:1">
+          <div style="font-size:22px; font-weight:700; color:${pending? '#b91c1c':'#374151'}">${pending}</div>
+          <div>Rent Pending</div>
         </div>
       </div>
     `;
-  });
-
-  // Pagination
-  let pag=document.getElementById("pagination");
-  pag.innerHTML="";
-  for(let i=1;i<=pages;i++){
-    pag.innerHTML+=`<button class="${i==currentPage?'active':''}" onclick="gotoPage(${i})">${i}</button>`;
+    document.getElementById('dashboardContent').innerHTML = html;
+  } catch(err){
+    console.error('loadDashboard error', err);
+    document.getElementById('dashboardContent').textContent = 'Failed to load dashboard (check SCRIPT_URL)';
   }
 }
 
-function gotoPage(p){
-  currentPage=p;
-  renderList();
+/* ---------- Load Tenants (list) ---------- */
+async function loadTenants(){
+  try{
+    console.log('Fetching tenants...');
+    const data = await apiFetch('list', { method: 'GET' });
+    console.log('RAW tenant response:', data);
+    if(!Array.isArray(data)) {
+      tenantData = Array.isArray(data.items) ? data.items : [];
+    } else {
+      tenantData = data;
+    }
+    // normalize records
+    tenantData = tenantData.map((r, idx) => ({
+      id: r.id || r.row || r._id || r._row || r.rowId || (r.row ? String(r.row) : undefined) || (r.id ? String(r.id) : undefined),
+      rowNum: r.row || r._row || null,   // sheet row - not used for edits
+      name: r.name || r.Name || '',
+      phone: r.phone || r.Phone || '',
+      moveIn: r.moveIn || r.MoveIn || r.movein || '',
+      moveOut: r.moveOut || r.MoveOut || r.moveout || '',
+      rent: r.rent || r.Rent || '',
+      rentStatus: r.rentStatus || r.RentStatus || 'Pending',
+      bed: String(r.bed || r.Bed || '').trim(),
+      room: String(r.room || r.Room || '').trim()
+    }));
+    currentPage = 1;
+    renderTenantList();
+    populateFilterRoom();
+  } catch(err){
+    console.error('loadTenants error', err);
+    tenantData = [];
+    tenantListContainer.innerHTML = '<div style="color:#b91c1c">Failed to load tenants. Check SCRIPT_URL and deployment.</div>';
+  }
 }
 
-search.oninput = renderList;
-document.getElementById("filter-room").onchange = renderList;
+/* ---------- Render list with pagination ---------- */
+function renderTenantList(){
+  try {
+    const q = (searchInput.value || '').trim().toLowerCase();
+    const froom = filterRoom.value || '';
+    let list = tenantData.slice();
 
+    if(froom) list = list.filter(t => t.room === froom);
+    if(q) list = list.filter(t => (t.name||'').toLowerCase().includes(q) || (t.phone||'').toLowerCase().includes(q) || (t.room||'').includes(q));
 
-/* ---------------- Delete Tenant ---------------- */
-async function deleteTenant(rowId) {
-  if (!confirm("Mark this tenant as deleted?")) return;
+    const total = list.length;
+    const pages = Math.max(1, Math.ceil(total / itemsPerPage));
+    if(currentPage > pages) currentPage = pages;
 
-  await fetch(`${SCRIPT_URL}?action=delete&id=${rowId}`);
+    const start = (currentPage - 1) * itemsPerPage;
+    const pageData = list.slice(start, start + itemsPerPage);
 
-  alert("Tenant deleted (soft delete). You can restore it.");
+    tenantListContainer.innerHTML = '';
+    if(pageData.length === 0){
+      tenantListContainer.innerHTML = '<div style="padding:12px;color:#6b7280">No tenants found</div>';
+    } else {
+      pageData.forEach(t => {
+        const el = document.createElement('div');
+        el.className = 'item';
+        el.innerHTML = `
+          <div>
+            <strong>${escapeHtml(t.name)}</strong><br>
+            ${escapeHtml(t.phone)} • Room ${escapeHtml(t.room)} • Bed ${escapeHtml(t.bed)} • ${escapeHtml(t.rentStatus)}
+          </div>
+          <div>
+            <button class="small-btn edit" onclick="startEdit('${t.id}')">Edit</button>
+            <button class="small-btn remove" onclick="softDelete('${t.id}')">Delete</button>
+            <button class="small-btn undo" onclick="restoreTenant('${t.id}')">Undo</button>
+          </div>
+        `;
+        tenantListContainer.appendChild(el);
+      });
+    }
 
-  loadTenants();
+    // pagination buttons
+    paginationEl.innerHTML = '';
+    for(let i=1;i<=pages;i++){
+      const b = document.createElement('button');
+      b.textContent = i;
+      b.className = (i===currentPage ? 'active' : '');
+      b.onclick = ()=> { currentPage = i; renderTenantList(); };
+      paginationEl.appendChild(b);
+    }
+
+  } catch(err){
+    console.error('renderTenantList error', err);
+    tenantListContainer.innerHTML = '<div style="color:#b91c1c">Error rendering tenants</div>';
+  }
 }
 
-
-/* ---------------- Edit Tenant (future expansion) ---------------- */
-function editTenant(row){
-  alert("Edit UI coming next — backend is ready.");
+/* ---------- populate filter rooms (only rooms present) ---------- */
+function populateFilterRoom(){
+  const present = Array.from(new Set(tenantData.map(t=>t.room).filter(Boolean))).sort();
+  filterRoom.innerHTML = '<option value="">All Rooms</option>';
+  present.forEach(r => filterRoom.innerHTML += `<option value="${r}">${r}</option>`);
 }
 
-loadDashboard();
+/* ---------- start Edit (prefill add form) ---------- */
+function startEdit(id){
+  const t = tenantData.find(x => String(x.id) === String(id));
+  if(!t){ alert('Tenant not found'); return; }
+
+  // prefill form
+  document.getElementById('name').value = t.name;
+  document.getElementById('phone').value = t.phone;
+  document.getElementById('moveIn').value = t.moveIn || '';
+  document.getElementById('moveOut').value = t.moveOut || '';
+  document.getElementById('rent').value = t.rent || '';
+  document.getElementById('rentStatus').value = t.rentStatus || 'Pending';
+  document.getElementById('room').value = t.room || '';
+  document.getElementById('bed').value = t.bed || '';
+  editIdInput.value = t.id || '';
+
+  // change UI
+  formTitle.textContent = '✏️ Edit Tenant';
+  saveBtn.textContent = 'Update Tenant';
+  showSection('add');
+  showToast('Editing tenant — make changes and Save');
+}
+
+/* ---------- reset form ---------- */
+function resetForm(){
+  tenantForm.reset();
+  editIdInput.value = '';
+  formTitle.textContent = '➕ Add Tenant';
+  saveBtn.textContent = 'Save Tenant';
+  formMsg.textContent = '';
+}
+
+/* ---------- save handler (add or edit) ---------- */
+tenantForm.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  if(isSubmitting) return;
+  isSubmitting = true;
+  saveBtn.disabled = true;
+
+  try {
+    // refresh tenantData for validation
+    await loadTenants();
+
+    const payload = {
+      name: document.getElementById('name').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      moveIn: document.getElementById('moveIn').value || '',
+      moveOut: document.getElementById('moveOut').value || '',
+      rent: document.getElementById('rent').value || '',
+      rentStatus: document.getElementById('rentStatus').value || 'Pending',
+      room: document.getElementById('room').value,
+      bed: document.getElementById('bed').value
+    };
+
+    if(!payload.name || !payload.phone || !payload.room || !payload.bed){
+      showToast('Please fill required fields', false);
+      return;
+    }
+
+    // handle max 4 per room properly (exclude editing record)
+    const editingId = editIdInput.value || null;
+    const occupants = tenantData.filter(t => t.room === payload.room && t.id !== editingId).length;
+    if(occupants >= 4){
+      showToast('Room already has 4 tenants', false);
+      return;
+    }
+
+    // bed uniqueness within room (exclude editing record)
+    const bedTaken = tenantData.some(t => t.room === payload.room && t.bed === payload.bed && t.id !== editingId);
+    if(bedTaken){
+      showToast('Selected bed already occupied in this room', false);
+      return;
+    }
+
+    if(editingId){
+      // edit
+      payload.id = editingId;
+      await apiFetch('edit', { method:'POST', body: payload });
+      showToast('Tenant updated');
+    } else {
+      // add
+      await apiFetch('add', { method:'POST', body: payload });
+      showToast('Tenant added');
+    }
+
+    resetForm();
+    await loadTenants();
+    showSection('list');
+
+  } catch(err){
+    console.error('save error', err);
+    showToast('Failed to save (check deployment)', false);
+  } finally {
+    isSubmitting = false;
+    saveBtn.disabled = false;
+  }
+});
+
+/* ---------- soft delete ---------- */
+async function softDelete(id){
+  if(!confirm('Mark this tenant as deleted? You can undo later.')) return;
+  try{
+    await apiFetch(`delete`, { method: 'GET', /*no body*/ });
+    // Note: Apps Script expects ?action=delete&id=... so use fetch directly:
+    await fetch(`${SCRIPT_URL}?action=delete&id=${encodeURIComponent(id)}`);
+    showToast('Tenant marked deleted (undo available)');
+    await loadTenants();
+  }catch(err){
+    console.error('softDelete error', err);
+    showToast('Delete failed', false);
+  }
+}
+
+/* ---------- restore ---------- */
+async function restoreTenant(id){
+  try{
+    await fetch(`${SCRIPT_URL}?action=restore&id=${encodeURIComponent(id)}`);
+    showToast('Tenant restored');
+    await loadTenants();
+  }catch(err){
+    console.error('restore error', err);
+    showToast('Restore failed', false);
+  }
+}
+
+/* ---------- helpers ---------- */
+function showToast(msg, success=true){
+  formMsg.style.color = success ? '#065f46' : '#b91c1c';
+  formMsg.textContent = msg;
+  setTimeout(()=> { if(formMsg.textContent === msg) formMsg.textContent = ''; }, 3000);
+}
+function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- small event hookups ---------- */
+searchInput.addEventListener('input', ()=>{ currentPage = 1; renderTenantList(); });
+filterRoom.addEventListener('change', ()=>{ currentPage = 1; renderTenantList(); });
+
+/* ---------- pagination helper ---------- */
+function gotoPage(n){ currentPage = n; renderTenantList(); }
+
+/* ---------- initial load ---------- */
+(async function init(){
+  try{ await loadTenants(); await loadDashboard(); } catch(e){ console.warn(e); }
+})();
+
+/* ---------- export helpers to window so inline onclick works ---------- */
+window.startEdit = startEdit;
+window.softDelete = softDelete;
+window.restoreTenant = restoreTenant;
+window.gotoPage = gotoPage;
+
 </script>
 </body>
 </html>
-
-
